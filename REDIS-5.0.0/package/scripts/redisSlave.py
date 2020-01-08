@@ -24,7 +24,7 @@ class RedisSlave(Script):
         try:
             pwd.getpwnam(params.redis_user)
         except KeyError:
-            User(username=params.redis_user,
+            User(params.redis_user,
                  gid=params.redis_group,
                  groups=[params.redis_group],
                  ignore_failures=True
@@ -146,7 +146,7 @@ class RedisSlave(Script):
         # Init Cluster
         if params.cluster_enabled_flag is True:
             # get ip
-            ip = os.popen('cat /etc/hosts | grep {hostname} | awk -F " " \'{extra1}\''.format(hostname=params.hostname, extra1=params.extra1)).read().strip()
+            ip = os.popen('cat /etc/hosts | grep $(hostname) | awk -F " " \'{extra1}\''.format(hostname=params.hostname, extra1=params.extra1)).read().strip()
             time.sleep(10)
             add_slave_cmd = format("{redis_base_dir_slave}/src/redis-cli --cluster add-node {ip}:{slave_port} {existing_host}:{master_port} --cluster-slave")
             Execute(add_slave_cmd, user=params.redis_user, ignore_failures=True)

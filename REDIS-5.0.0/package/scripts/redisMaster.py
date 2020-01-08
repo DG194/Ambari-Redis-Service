@@ -24,7 +24,7 @@ class RedisMaster(Script):
         try:
             pwd.getpwnam(params.redis_user)
         except KeyError:
-            User(username=params.redis_user,
+            User(params.redis_user,
                  gid=params.redis_group,
                  groups=[params.redis_group],
                  ignore_failures=True
